@@ -43,6 +43,14 @@ internal sealed class GlobalEnvironment : Environment
 
     public ObjectInstance GlobalThisValue => _global;
 
+    // Drops every top-level let/const/class binding and bumps the version so identifier caches that
+    // resolved against the old set are invalidated. Global-object (var/global) bindings are untouched.
+    internal void ClearLexicalDeclarations()
+    {
+        _declarativeRecord.Clear();
+        _lexicalMutations++;
+    }
+
     internal override bool HasBinding(Key name)
     {
         if (_declarativeRecord.HasBinding(name))

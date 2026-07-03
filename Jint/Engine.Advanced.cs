@@ -42,6 +42,17 @@ public partial class Engine
         }
 
         /// <summary>
+        /// Clears top-level lexical declarations (<c>let</c>/<c>const</c>/<c>class</c>) made in the global
+        /// scope. Intended for reusing an <see cref="Engine"/> across independent runs: without it, re-running
+        /// a script that declares the same global <c>let</c>/<c>const</c> throws "X has already been declared".
+        /// Global-object properties (<c>var</c> and plain assignments) are left in place.
+        /// </summary>
+        public void ClearGlobalLexicalDeclarations()
+        {
+            _engine.Realm.GlobalEnv.ClearLexicalDeclarations();
+        }
+
+        /// <summary>
         /// Forcefully processes the current task queues (micro and regular), this API may break and change behavior!
         /// </summary>
         public void ProcessTasks()
