@@ -138,6 +138,18 @@ public partial class Engine
             _builders.Add(specifier, moduleBuilder);
         }
 
+        /// <summary>
+        /// Removes every resolved module and pending module builder from this realm's registry.
+        /// Intended for reusing an <see cref="Engine"/> across independent runs: without it, re-adding a
+        /// module under a specifier that was already imported throws (the specifier is still registered).
+        /// Does not affect the loaded <see cref="ModuleLoader"/> or already-imported namespace objects.
+        /// </summary>
+        public void Clear()
+        {
+            _modules.Clear();
+            _builders.Clear();
+        }
+
         public ObjectInstance Import(string specifier)
         {
             return Import(specifier, referencingModuleLocation: null);
